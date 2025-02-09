@@ -21,7 +21,7 @@ const ASCII_ART = `                      _               _
    \\_/\\_/ \\___/ \\__,_|\\__\\___|_|  \\__,_|___(_)___\\___/|_| |_| |_|
 
 
- build ${process.env.COMMIT_SHA} @ ${process.env.BUILD_DATE}
+ build ${process.env.COMMIT_SHA}
 
  © ${new Date().getFullYear()} Wouter De Schuyter - https://wouterds.com
 `;
@@ -70,7 +70,7 @@ export default function handleRequest(
                 let content = Buffer.concat(chunks).toString();
                 content = content.replace(
                   '<!DOCTYPE html>',
-                  `<!DOCTYPE html>\n<!--\n${ASCII_ART}\n-->`,
+                  `<!DOCTYPE html>\n<!--\n${ASCII_ART}\n-->\n`,
                 );
                 this.push(Buffer.from(content));
                 callback();
