@@ -185,6 +185,25 @@ const renderBlock = ({
         </div>
       );
     }
+
+    if (record.video.provider === 'vimeo') {
+      return (
+        <div className="not-prose mt-6">
+          <div
+            className="bg-zinc-50 relative overflow-hidden bg-center bg-cover aspect-video w-full rounded-sm"
+            style={{ backgroundImage: `url(${record.video.thumbnailUrl})` }}>
+            <iframe
+              loading="lazy"
+              src={`https://player.vimeo.com/video/${record.video.providerUid}`}
+              title={record.video.title}
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full absolute inset-0"
+            />
+          </div>
+        </div>
+      );
+    }
   }
 
   return null;

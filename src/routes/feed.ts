@@ -73,6 +73,18 @@ export const loader = async () => {
                 [],
               )?.toString() as string;
             }
+
+            if (video.provider === 'vimeo') {
+              return renderNode(
+                'iframe',
+                {
+                  src: `https://player.vimeo.com/video/${video.providerUid}`,
+                  width: '100%',
+                  style: 'aspect-ratio:16/9',
+                },
+                [],
+              )?.toString() as string;
+            }
           }
 
           return '';
