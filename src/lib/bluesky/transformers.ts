@@ -1,6 +1,6 @@
 import type {
   BlueskyAPIPost,
-  BlueskyAPIRecord,
+  // BlueskyAPIRecord,
   BlueskyAPIReply,
   BlueskyPost,
   BlueskyReply,
@@ -21,7 +21,7 @@ export const transformReply = (
       handle: reply.post.author.handle,
     },
     date: reply.post.record.createdAt,
-    text: stripCanonicalUrlFromText(reply.post.record, canonical),
+    text: reply.post.record.text, //stripCanonicalUrlFromText(reply.post.record, canonical),
     replies:
       depth < 2 ? reply.replies.map((r) => transformReply(r, { depth: depth + 1, canonical })) : [],
     counts: {
@@ -49,7 +49,7 @@ export const transformPost = (
       handle: post.author.handle,
     },
     date: post.record.createdAt,
-    text: stripCanonicalUrlFromText(post.record, canonical),
+    text: post.record.text, //stripCanonicalUrlFromText(post.record, canonical),
     replies: replies.map((r) => transformReply(r, { depth: 0, canonical })),
     counts: {
       replies: post.replyCount,
@@ -60,19 +60,19 @@ export const transformPost = (
   };
 };
 
-const stripCanonicalUrlFromText = (record: BlueskyAPIRecord, canonical: string) => {
-  if (!record.facets?.length) return record.text;
+// const stripCanonicalUrlFromText = (record: BlueskyAPIRecord, canonical: string) => {
+//   if (!record.facets?.length) return record.text;
 
-  const canonicalFacet = record.facets.find((facet) =>
-    facet.features.some(
-      (feature) => feature.$type === 'app.bsky.richtext.facet#link' && feature.uri === canonical,
-    ),
-  );
+//   const canonicalFacet = record.facets.find((facet) =>
+//     facet.features.some(
+//       (feature) => feature.$type === 'app.bsky.richtext.facet#link' && feature.uri === canonical,
+//     ),
+//   );
 
-  if (!canonicalFacet) return record.text;
+//   if (!canonicalFacet) return record.text;
 
-  const before = record.text.slice(0, canonicalFacet.index.byteStart);
-  const after = record.text.slice(canonicalFacet.index.byteEnd);
+//   const before = record.text.slice(0, canonicalFacet.index.byteStart);
+//   const after = record.text.slice(canonicalFacet.index.byteEnd);
 
-  return (before + after).trim();
-};
+//   return (before + after).trim();
+// };
