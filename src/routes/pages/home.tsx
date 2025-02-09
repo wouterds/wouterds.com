@@ -4,7 +4,6 @@ import {
   SiInstagram,
   SiSteam,
   SiThreads,
-  SiYoutube,
 } from '@icons-pack/react-simple-icons';
 
 import { Article } from '~/components/article';
