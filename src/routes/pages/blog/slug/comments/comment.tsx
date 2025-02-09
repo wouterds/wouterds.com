@@ -35,6 +35,17 @@ export const Comment = ({
   className,
 }: CommentProps) => {
   if (text?.length < 3) {
+    if (replies.length > 0) {
+      return replies.map((reply) => (
+        <Comment
+          key={reply.uri}
+          {...reply}
+          level={level}
+          className="border-t border-zinc-200 dark:border-zinc-800 first:border-t-0"
+        />
+      ));
+    }
+
     return null;
   }
 
