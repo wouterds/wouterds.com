@@ -4,8 +4,9 @@ import { Await, useLoaderData } from 'react-router';
 
 import { Avatar, AvatarFallback } from '~/components/ui/avatar';
 import { Skeleton } from '~/components/ui/skeleton';
-import type { BlueskyPost, BlueskyReply } from '~/lib/bluesky/types';
+import { BLUESKY_AUTHOR } from '~/lib/bluesky';
 
+import type { loader } from '../index';
 import { Comment } from './comment';
 
 export const CommentSkeleton = () => {
@@ -30,16 +31,8 @@ export const CommentSkeleton = () => {
   );
 };
 
-export const CommentThread = ({ reply }: { reply: BlueskyReply }) => {
-  return (
-    <div className="border-t border-zinc-200 dark:border-zinc-800 first:border-t-0">
-      <Comment {...reply} />
-    </div>
-  );
-};
-
 export const Comments = () => {
-  const { blueskyPost } = useLoaderData<{ blueskyPost: Promise<BlueskyPost | null> }>();
+  const { blueskyPosts, title, canonical } = useLoaderData<typeof loader>();
 
   return (
     <Suspense
@@ -49,7 +42,7 @@ export const Comments = () => {
           <p className="mb-3">
             Join the conversation by{' '}
             <span className="font-medium text-zinc-500 dark:text-zinc-400">
-              replying on Bluesky{' '}
+              sharing on Bluesky{' '}
               <SiBluesky
                 size={18}
                 className="text-zinc-400 dark:text-zinc-500 hidden sm:inline-block align-text-bottom ml-1"
@@ -67,11 +60,9 @@ export const Comments = () => {
           </div>
         </div>
       }>
-      <Await resolve={blueskyPost}>
-        {(post) => {
-          if (!post?.uri) {
-            return null;
-          }
+      <Await resolve={blueskyPosts}>
+        {(posts) => {
+          const selfPost = posts?.find((post) => post.author.handle === BLUESKY_AUTHOR);
 
           return (
             <div className="mt-12 sm:mt-16 pt-0 sm:pt-2 border-t border-zinc-200 dark:border-zinc-800">
@@ -79,9 +70,18 @@ export const Comments = () => {
               <p className="mb-3">
                 Join the conversation by{' '}
                 <span>
-                  <a href={post.url} target="_blank" rel="noreferrer">
-                    replying on Bluesky
-                  </a>{' '}
+                  {selfPost ? (
+                    <a href={selfPost.url} target="_blank" rel="noreferrer">
+                      replying on Bluesky
+                    </a>
+                  ) : (
+                    <a
+                      href={`https://bsky.app/intent/compose?${new URLSearchParams({ text: `${title} ${canonical}` })}`}
+                      target="_blank"
+                      rel="noreferrer">
+                      sharing on Bluesky
+                    </a>
+                  )}
                   <SiBluesky
                     size={18}
                     className="text-blue-600 dark:text-blue-500 hidden sm:inline-block align-text-bottom ml-1"
@@ -89,11 +89,17 @@ export const Comments = () => {
                 </span>
               </p>
 
-              <div>
-                {post.replies.map((reply) => (
-                  <CommentThread key={reply.uri} reply={reply} />
-                ))}
-              </div>
+              {!!posts?.length && (
+                <div>
+                  {posts?.map((post) => (
+                    <Comment
+                      key={post.uri}
+                      {...post}
+                      className="border-t border-zinc-200 dark:border-zinc-800 first:border-t-0"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           );
         }}

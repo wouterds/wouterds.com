@@ -4,11 +4,23 @@ import { Heart, MessageCircle, Repeat2 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
-import type { BlueskyReply } from '~/lib/bluesky/types';
+import type { BlueskyAuthor, BlueskyReply } from '~/lib/bluesky';
 
-export type CommentProps = BlueskyReply & {
+export type CommentProps = {
   level?: number;
   uri: string;
+  className?: string;
+  url: string;
+  author: BlueskyAuthor;
+  date: string;
+  text: string;
+  replies: BlueskyReply[];
+  counts: {
+    replies: number;
+    reposts: number;
+    likes: number;
+    quotes: number;
+  };
 };
 
 export const Comment = ({
@@ -20,11 +32,16 @@ export const Comment = ({
   level = 0,
   uri,
   counts,
+  className,
 }: CommentProps) => {
+  if (text?.length < 3) {
+    return null;
+  }
+
   return (
     <>
       <div
-        className={clsx('group relative flex gap-4 py-4', {
+        className={clsx('group relative flex gap-4 py-4', className, {
           'pt-0': level > 0,
           'pl-8': level === 1,
           'pl-16': level === 2,

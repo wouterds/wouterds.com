@@ -1,3 +1,5 @@
+export const BLUESKY_AUTHOR = 'wouterds.com';
+
 export interface BlueskyAPIAuthor {
   avatar: string;
   displayName: string;
@@ -7,6 +9,16 @@ export interface BlueskyAPIAuthor {
 export interface BlueskyAPIRecord {
   createdAt: string;
   text: string;
+  facets?: Array<{
+    features: Array<{
+      $type: string;
+      uri: string;
+    }>;
+    index: {
+      byteStart: number;
+      byteEnd: number;
+    };
+  }>;
 }
 
 export interface BlueskyAPIPost {
@@ -49,6 +61,9 @@ export interface BlueskyReply {
 export interface BlueskyPost {
   uri: string;
   url: string;
+  author: BlueskyAuthor;
+  date: string;
+  text: string;
   replies: BlueskyReply[];
   counts: {
     replies: number;

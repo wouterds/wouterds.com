@@ -38,7 +38,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   const images = imagesFromContent(post?.content);
 
   const canonical = new URL(`/blog/${post.slug}`, 'https://wouterds.com').toString();
-  const blueskyPost = Bluesky.getPost(canonical);
+  const blueskyPosts = Bluesky.getPosts(canonical);
 
   return {
     title,
@@ -46,9 +46,10 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     text,
     images,
     url: config.baseUrl,
+    canonical,
     post,
     containsCodeBlocks,
-    blueskyPost,
+    blueskyPosts,
   };
 };
 
