@@ -89,23 +89,21 @@ export default function Home() {
         electronics. Or just in general creating stuff. Been following the crypto space since 2017
         but have been taking some distance from it more recently.
       </p>
-      <p>
-        You can also find me on
-        <ul className="flex flex-wrap gap-2 p-0 my-2 list-none">
-          {links.map((link) => (
-            <li key={link.link} className="m-0">
-              <a
-                href={link.link}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1.5">
-                <link.icon className="size-5" />
-                {link.text}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </p>
+      <p className="mb-2">You can also find me on</p>
+      <ul className="flex flex-wrap gap-x-3 gap-y-1.5 p-0 m-0 list-none">
+        {links.map((link) => (
+          <li key={link.link} className="m-0 p-0">
+            <a
+              href={link.link}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5">
+              <link.icon className="size-5" />
+              {link.text}
+            </a>
+          </li>
+        ))}
+      </ul>
     </Article>
   );
 }
