@@ -13,6 +13,19 @@ import {
 
 export const streamTimeout = 5_000;
 
+const ASCII_ART = `                      _               _
+                     | |             | |
+ __      _____  _   _| |_ ___ _ __ __| |___   ___ ___  _ __ ___
+ \\ \\ /\\ / / _ \\| | | | __/ _ \\ '__/ _\` / __| / __/ _ \\| '_ \` _ \\
+  \\ V  V / (_) | |_| | ||  __/ | | (_| \\__ \\| (_| (_) | | | | | |
+   \\_/\\_/ \\___/ \\__,_|\\__\\___|_|  \\__,_|___(_)___\\___/|_| |_| |_|
+
+
+ build ${process.env.COMMIT_SHA} @ ${process.env.BUILD_DATE}
+
+ © ${new Date().getFullYear()} Wouter De Schuyter - https://wouterds.com
+`;
+
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -29,7 +42,7 @@ export default function handleRequest(
     const readyOption: keyof RenderToPipeableStreamOptions =
       (userAgent && isbot(userAgent)) || routerContext.isSpaMode ? 'onAllReady' : 'onShellReady';
 
-    const { pipe, abort } = renderToPipeableStream(
+    const { pipe: originalPipe, abort } = renderToPipeableStream(
       <ServerRouter context={routerContext} url={request.url} />,
       {
         [readyOption]() {
@@ -45,6 +58,27 @@ export default function handleRequest(
               status: responseStatusCode,
             }),
           );
+
+          const pipe = (writable: NodeJS.WritableStream) => {
+            const chunks: Buffer[] = [];
+            const transform = new PassThrough({
+              transform(chunk, _, callback) {
+                chunks.push(chunk);
+                callback();
+              },
+              flush(callback) {
+                let content = Buffer.concat(chunks).toString();
+                content = content.replace(
+                  '<!DOCTYPE html>',
+                  `<!DOCTYPE html>\n<!--\n${ASCII_ART}\n-->`,
+                );
+                this.push(Buffer.from(content));
+                callback();
+              },
+            });
+            transform.pipe(writable);
+            return originalPipe(transform);
+          };
 
           pipe(body);
         },
