@@ -2053,7 +2053,7 @@ export type PostRecord = RecordInterface & {
   content: PostModelContentField;
   date: Scalars['DateTime']['output'];
   id: Scalars['ItemId']['output'];
-  poster: FileField;
+  poster?: Maybe<FileField>;
   slug: Scalars['String']['output'];
   title: Scalars['String']['output'];
 };
@@ -2773,14 +2773,14 @@ export type GetPostQueryVariables = Exact<{
 }>;
 
 
-export type GetPostQuery = { __typename?: 'Query', post?: { __typename: 'PostRecord', id: string, title: string, slug: string, date: string, poster: { __typename: 'FileField', url: string }, content: { __typename: 'PostModelContentField', value: StructuredText, blocks: Array<{ __typename: 'GalleryRecord', id: string, images: Array<{ __typename: 'FileField', id: string, url: string, alt?: string | null, size: number, width?: number | null, height?: number | null, responsiveImage?: { __typename?: 'ResponsiveImage', base64?: string | null } | null }> } | { __typename: 'VideoRecord', id: string, video: { __typename?: 'VideoField', title: string, provider: string, providerUid: string, thumbnailUrl: string } }> } } | null };
+export type GetPostQuery = { __typename?: 'Query', post?: { __typename: 'PostRecord', id: string, title: string, slug: string, date: string, poster?: { __typename: 'FileField', url: string } | null, content: { __typename: 'PostModelContentField', value: StructuredText, blocks: Array<{ __typename: 'GalleryRecord', id: string, images: Array<{ __typename: 'FileField', id: string, url: string, alt?: string | null, size: number, width?: number | null, height?: number | null, responsiveImage?: { __typename?: 'ResponsiveImage', base64?: string | null } | null }> } | { __typename: 'VideoRecord', id: string, video: { __typename?: 'VideoField', title: string, provider: string, providerUid: string, thumbnailUrl: string } }> } } | null };
 
 export type GetPostsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['IntType']['input']>;
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', allPosts: Array<{ __typename: 'PostRecord', id: string, title: string, slug: string, date: string, poster: { __typename: 'FileField', url: string }, content: { __typename: 'PostModelContentField', value: StructuredText, blocks: Array<{ __typename: 'GalleryRecord', id: string, images: Array<{ __typename: 'FileField', id: string, url: string, alt?: string | null, width?: number | null, height?: number | null, responsiveImage?: { __typename?: 'ResponsiveImage', base64?: string | null } | null }> } | { __typename: 'VideoRecord', id: string, video: { __typename?: 'VideoField', title: string, provider: string, providerUid: string, thumbnailUrl: string } }> } }> };
+export type GetPostsQuery = { __typename?: 'Query', allPosts: Array<{ __typename: 'PostRecord', id: string, title: string, slug: string, date: string, poster?: { __typename: 'FileField', url: string } | null, content: { __typename: 'PostModelContentField', value: StructuredText, blocks: Array<{ __typename: 'GalleryRecord', id: string, images: Array<{ __typename: 'FileField', id: string, url: string, alt?: string | null, width?: number | null, height?: number | null, responsiveImage?: { __typename?: 'ResponsiveImage', base64?: string | null } | null }> } | { __typename: 'VideoRecord', id: string, video: { __typename?: 'VideoField', title: string, provider: string, providerUid: string, thumbnailUrl: string } }> } }> };
 
 export type GetPreviousPostQueryVariables = Exact<{
   date: Scalars['DateTime']['input'];

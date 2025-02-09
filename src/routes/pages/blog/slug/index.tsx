@@ -71,30 +71,35 @@ export const meta: MetaFunction<typeof loader> = ({ data, location }) => {
       ? new URL(post.poster.url).pathname
       : '';
 
-  return [
+  const tags = [
     { title },
     { name: 'description', content: description },
     { name: 'og:title', content: title },
     { name: 'og:description', content: description },
     { name: 'og:type', content: 'article' },
     { name: 'article:published_time', content: post?.date },
-    ogImage && {
-      name: 'og:image',
-      content: new URL(`/images${ogImage}`, config.baseUrl).toString(),
-    },
     { name: 'og:url', content: new URL(`/blog/${post?.slug}`, config.baseUrl).toString() },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
     { name: 'twitter:card', content: 'summary_large_image' },
-    ogImage && {
-      name: 'twitter:image',
-      content: new URL(`/images${ogImage}`, config.baseUrl).toString(),
-    },
     { name: 'twitter:label1', content: 'Written by' },
     { name: 'twitter:data1', content: 'Wouter De Schuyter' },
     { name: 'twitter:label2', content: 'Est. reading time' },
     { name: 'twitter:data2', content: `${readingTime} minute${readingTime > 1 ? 's' : ''}` },
-  ].filter(Boolean);
+  ];
+
+  if (ogImage) {
+    tags.push({
+      name: 'og:image',
+      content: new URL(`/images${ogImage}`, config.baseUrl).toString(),
+    });
+    tags.push({
+      name: 'twitter:image',
+      content: new URL(`/images${ogImage}`, config.baseUrl).toString(),
+    });
+  }
+
+  return tags;
 };
 
 export default function BlogSlug() {

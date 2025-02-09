@@ -32,7 +32,9 @@ export const loader = async () => {
       title,
       id: new URL(`/blog/${slug}`, config.baseUrl).toString(),
       link: new URL(`/blog/${slug}`, config.baseUrl).toString(),
-      image: new URL(`/images${new URL(poster.url).pathname}`, config.baseUrl).toString(),
+      image: poster
+        ? new URL(`/images${new URL(poster.url).pathname}`, config.baseUrl).toString()
+        : undefined,
       description: excerpt,
       content: render(content as unknown as StructuredTextDocument, {
         renderBlock: ({ record, adapter: { renderNode } }) => {
