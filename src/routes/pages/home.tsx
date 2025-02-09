@@ -3,6 +3,7 @@ import {
   SiGithub,
   SiInstagram,
   SiSteam,
+  SiThreads,
   SiYoutube,
 } from '@icons-pack/react-simple-icons';
 
@@ -49,14 +50,14 @@ const links = [
     link: 'https://twitter.com/wouterds',
   },
   {
+    icon: SiThreads,
+    text: 'Threads',
+    link: 'https://threads.net/@wouterds',
+  },
+  {
     icon: SiInstagram,
     text: 'Instagram',
     link: 'https://instagram.com/wouterds',
-  },
-  {
-    icon: SiYoutube,
-    text: 'YouTube',
-    link: 'https://youtube.com/@wouterdeschuyter',
   },
   {
     icon: SiSteam,
