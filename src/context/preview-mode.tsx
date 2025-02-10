@@ -59,10 +59,12 @@ export const PreviewModeProvider = ({
 
   return (
     <PreviewModeContext.Provider value={{ isPreviewMode, setPreviewMode }}>
-      <p className="flex items-center gap-2.5 text-sm text-white py-2 px-6 sm:px-8 bg-rose-500 transition w-full">
-        <TriangleAlertIcon className="size-5" />
-        <span>preview mode</span>
-      </p>
+      {isPreviewMode && (
+        <p className="flex items-center gap-2.5 text-sm text-white py-2 px-6 sm:px-8 bg-rose-500 transition w-full">
+          <TriangleAlertIcon className="size-5" />
+          <span>preview mode</span>
+        </p>
+      )}
       {children}
     </PreviewModeContext.Provider>
   );
