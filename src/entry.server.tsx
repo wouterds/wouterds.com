@@ -21,7 +21,7 @@ const ASCII_ART = `                      _               _
    \\_/\\_/ \\___/ \\__,_|\\__\\___|_|  \\__,_|___(_)___\\___/|_| |_| |_|
 
 
- build ${process.env.COMMIT_SHA}
+ build ${process.env.COMMIT_SHA} ${process.env.BUILD_TIMESTAMP}
 
  © ${new Date().getFullYear()} Wouter De Schuyter - https://wouterds.com
 `;

@@ -29,6 +29,7 @@ FROM base AS runtime
 WORKDIR /code
 
 RUN apk update && apk add --no-cache libc6-compat dumb-init
+RUN (date +'%Y-%m-%dT%H:%M:%SZ') > timestamp.txt
 
 COPY --chown=node:node --from=build /code/build ./build
 COPY --chown=node:node --from=build /code/instrument.server.mjs ./instrument.server.mjs
@@ -41,10 +42,9 @@ ENV COMMIT_SHA=$COMMIT_SHA
 ENV PORT=3000
 ENV HOST=0.0.0.0
 ENV NODE_ENV=production
-ENV BUILD_DATE="`date -u +%Y-%m-%dT%H:%M:%SZ`"
 
 USER node
 EXPOSE $PORT
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD npm run start
+CMD BUILD_TIMESTAMP=$(cat timestamp.txt) npm run start
