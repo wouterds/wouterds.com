@@ -21,7 +21,12 @@ const ASCII_ART = `                      _               _
    \\_/\\_/ \\___/ \\__,_|\\__\\___|_|  \\__,_|___(_)___\\___/|_| |_| |_|
 
 
- build ${process.env.COMMIT_SHA} ${process.env.BUILD_TIMESTAMP}
+ ray: {CF_RAY}
+ ip: {IP}
+ ip country: {IP_COUNTRY}
+
+ build: ${process.env.COMMIT_SHA || null}
+ build timestamp: ${process.env.BUILD_TIMESTAMP || null}
 
  © ${new Date().getFullYear()} Wouter De Schuyter - https://wouterds.com
 `;
@@ -68,9 +73,14 @@ export default function handleRequest(
               },
               flush(callback) {
                 let content = Buffer.concat(chunks).toString();
+
+                const ray = request.headers.get('cf-ray') as string;
+                const ip = request.headers.get('cf-connecting-ip') as string;
+                const ipCountry = request.headers.get('cf-ipcountry') as string;
+
                 content = content.replace(
                   '<!DOCTYPE html>',
-                  `<!DOCTYPE html>\n<!--\n${ASCII_ART}\n-->\n`,
+                  `<!DOCTYPE html>\n<!--\n${ASCII_ART.replace('{CF_RAY}', ray).replace('{IP}', ip).replace('{IP_COUNTRY}', ipCountry)}\n-->\n`,
                 );
                 this.push(Buffer.from(content));
                 callback();
