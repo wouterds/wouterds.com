@@ -47,7 +47,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const meta: MetaFunction<typeof loader> = ({ error, data }) => {
   if (error) {
-    return [{ title: 'Oops, something went wrong!' }];
+    return [{ title: 'Oops, something went wrong!' }, { name: 'robots', content: 'noindex' }];
   }
 
   const title = 'Wouter De Schuyter';
