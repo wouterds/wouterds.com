@@ -1,10 +1,10 @@
-import { type MetaFunction, useLoaderData } from 'react-router';
+import { type LoaderFunctionArgs, type MetaFunction, useLoaderData } from 'react-router';
 
 import { Posts } from '~/components/posts';
 import { PostRepository } from '~/graphql/posts/repository.server';
 
-export const loader = async () => {
-  const posts = await new PostRepository().getPosts(100);
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const posts = await new PostRepository(request).getPosts(100);
 
   return { posts };
 };

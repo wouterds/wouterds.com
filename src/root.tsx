@@ -18,15 +18,30 @@ import { Experiments } from './components/experiments';
 import Footer from './components/footer';
 import Header from './components/header';
 import { config } from './config';
+import { PreviewModeProvider } from './context/preview-mode';
 import stylesheet from './main.css?url';
 
 export const links: Route.LinksFunction = () => [{ rel: 'stylesheet', href: stylesheet }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
+  const previewParam = url.searchParams.get('preview');
+
+  // Get preview mode from cookie
+  const previewCookie = request.headers
+    .get('cookie')
+    ?.split(';')
+    .find((cookie) => cookie.trim().startsWith('preview-mode='));
+
+  // Determine preview mode state
+  let isPreviewMode = previewCookie?.includes('true') ?? false;
+  if (previewParam !== null) {
+    isPreviewMode = previewParam === 'true';
+  }
 
   return {
     canonical: new URL(url.pathname, config.baseUrl).toString().replace(/\/$/, ''),
+    isPreviewMode,
   };
 };
 
@@ -111,11 +126,13 @@ export function Layout({ children }: { children: ReactNode }) {
         )}
       </head>
       <body>
-        <Header />
-        <main className="max-w-screen-md w-full mx-auto px-6 sm:px-8">{children}</main>
-        <Footer />
-        <Experiments />
-        <div id="modal-portal" />
+        <PreviewModeProvider isPreviewMode={data.isPreviewMode}>
+          <Header />
+          <main className="max-w-screen-md w-full mx-auto px-6 sm:px-8">{children}</main>
+          <Footer />
+          <Experiments />
+          <div id="modal-portal" />
+        </PreviewModeProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

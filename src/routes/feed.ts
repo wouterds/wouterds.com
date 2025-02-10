@@ -2,13 +2,14 @@ import { render, type StructuredTextDocument } from 'datocms-structured-text-to-
 import { isStructuredText } from 'datocms-structured-text-utils';
 import { Feed } from 'feed';
 import { StatusCodes } from 'http-status-codes';
+import { type LoaderFunctionArgs } from 'react-router';
 
 import { config } from '~/config';
 import type { GalleryRecord, VideoRecord } from '~/graphql';
 import { PostRepository } from '~/graphql/posts/repository.server';
 
-export const loader = async () => {
-  const posts = await new PostRepository().getPosts();
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const posts = await new PostRepository(request).getPosts();
 
   const feed = new Feed({
     title: "Wouter's blog",

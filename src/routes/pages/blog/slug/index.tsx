@@ -20,8 +20,8 @@ import { excerptFromContent, imagesFromContent, plainTextFromContent } from '~/l
 
 import { Comments } from './comments';
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const post = await new PostRepository().getPost(params.slug as string);
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+  const post = await new PostRepository(request).getPost(params.slug as string);
   if (!post) {
     throw new Response(null, {
       status: StatusCodes.NOT_FOUND,

@@ -1,10 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
+import { type LoaderFunctionArgs } from 'react-router';
 
 import { config } from '~/config';
 import { PostRepository } from '~/graphql/posts/repository.server';
 
-export const loader = async () => {
-  const posts = await new PostRepository().getPosts();
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const posts = await new PostRepository(request).getPosts();
 
   let sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
   sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';

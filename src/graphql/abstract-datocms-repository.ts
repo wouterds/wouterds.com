@@ -6,8 +6,21 @@ import { md5 } from '~/lib/crypto.server';
 const CACHE_TTL_HOURS = 2;
 
 export abstract class DatoCMSRepository {
+  constructor(private readonly request?: Request) {}
+
   private get apiKey() {
     return process.env.DATOCMS_API_KEY;
+  }
+
+  private get inPreviewMode() {
+    if (!this.request) return false;
+
+    const previewCookie = this.request.headers
+      .get('cookie')
+      ?.split(';')
+      .find((cookie) => cookie.trim().startsWith('preview-mode='));
+
+    return previewCookie?.includes('true') ?? false;
   }
 
   private get headers() {
@@ -16,9 +29,9 @@ export abstract class DatoCMSRepository {
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', `Bearer ${this.apiKey}`);
 
-    // if (this.inPreviewMode) {
-    //   headers.append('X-Include-Drafts', 'true');
-    // }
+    if (this.inPreviewMode) {
+      headers.append('X-Include-Drafts', 'true');
+    }
 
     return headers;
   }
@@ -30,7 +43,7 @@ export abstract class DatoCMSRepository {
     },
   ) => {
     const request = JSON.stringify({ query: print(query), variables: options.variables });
-    const cacheKey = `datocms.query:${md5(request)}`;
+    const cacheKey = `datocms.query:${md5(request)}:preview:${this.inPreviewMode}`;
 
     const cached = await Cache.get(cacheKey);
     if (cached) {
