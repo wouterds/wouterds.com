@@ -4,7 +4,7 @@ import { md5 } from '~/lib/crypto.server';
 import { transformPost } from './transformers';
 import type { BlueskyAPIPost, BlueskyAPIReply, BlueskyPost } from './types';
 
-const CACHE_TTL_MINUTES = 2;
+const CACHE_TTL_MINUTES = 5;
 
 const getPostReplies = async (atUri: string): Promise<BlueskyAPIReply[]> => {
   const cacheKey = `bluesky.post.replies:${md5(atUri)}`;
