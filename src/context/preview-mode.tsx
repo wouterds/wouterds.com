@@ -19,7 +19,7 @@ export const PreviewModeProvider = ({
   isPreviewMode: initialPreviewMode = false,
 }: PreviewModeProviderProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isPreviewMode, setIsPreviewMode] = useState(initialPreviewMode);
+  const [isPreviewMode, setIsPreviewMode] = useState(initialPreviewMode || false);
 
   useEffect(() => {
     // Check for preview param

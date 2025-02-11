@@ -126,7 +126,7 @@ export function Layout({ children }: { children: ReactNode }) {
         )}
       </head>
       <body>
-        <PreviewModeProvider isPreviewMode={data.isPreviewMode}>
+        <PreviewModeProvider isPreviewMode={data?.isPreviewMode}>
           <Header />
           <main className="max-w-screen-md w-full mx-auto px-6 sm:px-8">{children}</main>
           <Footer />
