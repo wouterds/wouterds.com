@@ -42,11 +42,8 @@ export const Comments = () => {
           <p className="mb-3">
             Join the conversation by{' '}
             <span className="font-medium text-zinc-500 dark:text-zinc-400">
-              sharing on Bluesky{' '}
-              <SiBluesky
-                size={18}
-                className="text-zinc-400 dark:text-zinc-500 hidden sm:inline-block align-text-bottom ml-1"
-              />
+              <span className="inline-block mr-1.5">sharing on Bluesky</span>
+              <SiBluesky className="text-zinc-400 dark:text-zinc-500 inline-block align-text-bottom size-4" />
             </span>
           </p>
 
@@ -71,21 +68,23 @@ export const Comments = () => {
                 Join the conversation by{' '}
                 <span>
                   {selfPost ? (
-                    <a href={selfPost.url} target="_blank" rel="noreferrer">
+                    <a
+                      href={selfPost.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-block mr-1.5">
                       replying on Bluesky
                     </a>
                   ) : (
                     <a
                       href={`https://bsky.app/intent/compose?${new URLSearchParams({ text: `${title} ${canonical}` })}`}
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                      className="inline-block mr-1.5">
                       sharing on Bluesky
                     </a>
                   )}
-                  <SiBluesky
-                    size={18}
-                    className="text-blue-600 dark:text-blue-500 hidden sm:inline-block align-text-bottom ml-1"
-                  />
+                  <SiBluesky className="text-blue-600 dark:text-blue-500 inline-block align-text-bottom size-4" />
                 </span>
               </p>
 

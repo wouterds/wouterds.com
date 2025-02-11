@@ -75,6 +75,10 @@
     @apply underline hover:no-underline;
   }
 
+  & .prose a {
+    @apply font-normal;
+  }
+
   blockquote {
     font-weight: inherit;
 
