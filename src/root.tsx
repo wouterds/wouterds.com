@@ -68,16 +68,6 @@ export const meta: MetaFunction<typeof loader> = ({ error, data }) => {
   ];
 };
 
-/**
-                      _               _
-                     | |             | |
- __      _____  _   _| |_ ___ _ __ __| |___   ___ ___  _ __ ___
- \ \ /\ / / _ \| | | | __/ _ \ '__/ _` / __| / __/ _ \| '_ ` _ \
-  \ V  V / (_) | |_| | ||  __/ | | (_| \__ \| (_| (_) | | | | | |
-   \_/\_/ \___/ \__,_|\__\___|_|  \__,_|___(_)___\___/|_| |_| |_|
-
- */
-
 export function Layout({ children }: { children: ReactNode }) {
   const data = useLoaderData<typeof loader>();
 
