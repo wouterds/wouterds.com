@@ -9,7 +9,6 @@ import type { BlueskyAuthor, BlueskyReply } from '~/lib/bluesky';
 export type CommentProps = {
   level?: number;
   uri: string;
-  className?: string;
   url: string;
   author: BlueskyAuthor;
   date: string;
@@ -32,18 +31,10 @@ export const Comment = ({
   level = 0,
   uri,
   counts,
-  className,
 }: CommentProps) => {
   if (text?.length < 3) {
     if (replies.length > 0) {
-      return replies.map((reply) => (
-        <Comment
-          key={reply.uri}
-          {...reply}
-          level={level}
-          className="border-t border-zinc-200 dark:border-zinc-800 first:border-t-0"
-        />
-      ));
+      return replies.map((reply) => <Comment key={reply.uri} {...reply} level={level} />);
     }
 
     return null;
@@ -52,10 +43,11 @@ export const Comment = ({
   return (
     <>
       <div
-        className={clsx('group relative flex gap-4 py-4', className, {
+        className={clsx('group relative flex gap-3 sm:gap-4 py-4', {
           'pt-0': level > 0,
-          'pl-8': level === 1,
-          'pl-16': level === 2,
+          'pl-4': level === 1,
+          'pl-8': level === 2,
+          'pl-12': level === 3,
         })}>
         <Avatar>
           <AvatarImage src={author.avatarUrl} alt={author.displayName} />

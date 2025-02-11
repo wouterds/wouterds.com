@@ -11,7 +11,7 @@ import { Comment } from './comment';
 
 export const CommentSkeleton = () => {
   return (
-    <div className="group relative flex gap-4 py-4">
+    <div className="group relative flex gap-3 sm:gap-4 py-4">
       <Avatar>
         <AvatarFallback>
           <Skeleton className="h-full w-full rounded-full" />
@@ -88,17 +88,7 @@ export const Comments = () => {
                 </span>
               </p>
 
-              {!!posts?.length && (
-                <div>
-                  {posts?.map((post) => (
-                    <Comment
-                      key={post.uri}
-                      {...post}
-                      className="border-t border-zinc-200 dark:border-zinc-800 first:border-t-0"
-                    />
-                  ))}
-                </div>
-              )}
+              {posts?.map((post) => <Comment key={post.uri} {...post} />)}
             </div>
           );
         }}
