@@ -47,7 +47,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const meta: MetaFunction<typeof loader> = ({ error, data }) => {
   if (error) {
-    return [{ title: 'Oops, something went wrong!' }, { name: 'robots', content: 'noindex' }];
+    return [{ title: 'Oops, something went wrong!' }];
   }
 
   const title = 'Wouter De Schuyter';
@@ -76,7 +76,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1" />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content={data?.canonical ? 'index,follow' : 'noindex,follow'} />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link
