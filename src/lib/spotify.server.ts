@@ -154,7 +154,7 @@ export class Spotify {
       headers: { Authorization: `Bearer ${await this.accessToken}` },
     });
 
-    if (response.status === 204) {
+    if (response.status !== 200) {
       return null;
     }
 
@@ -168,6 +168,10 @@ export class Spotify {
     const response = await fetch(`https://api.spotify.com/v1/me/player/recently-played?${params}`, {
       headers: { Authorization: `Bearer ${await this.accessToken}` },
     });
+
+    if (response.status !== 200) {
+      return [];
+    }
 
     return response
       .json()
