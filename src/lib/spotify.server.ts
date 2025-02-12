@@ -3,6 +3,10 @@ import { Buffer } from 'node:buffer';
 import { addSeconds, getUnixTime, isPast } from 'date-fns';
 
 import { AuthTokens } from '~/database';
+import { Cache } from '~/lib/cache.server';
+import { md5 } from '~/lib/crypto.server';
+
+const CACHE_TTL_MINUTES = 1;
 
 export class Spotify {
   private _refreshToken: string | null;
@@ -150,6 +154,12 @@ export class Spotify {
   }
 
   public async getCurrentlyPlaying() {
+    const cacheKey = 'spotify.currently-playing';
+    const cached = await Cache.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       headers: { Authorization: `Bearer ${await this.accessToken}` },
     });
@@ -158,10 +168,24 @@ export class Spotify {
       return null;
     }
 
-    return response.json().then(({ item }: { item: SpotifyRawDataTrack }) => mapSong(item));
+    const song = await response
+      .json()
+      .then(({ item }: { item: SpotifyRawDataTrack }) => mapSong(item));
+
+    if (song) {
+      await Cache.set(cacheKey, song, CACHE_TTL_MINUTES * 60);
+    }
+
+    return song;
   }
 
   public async getRecentlyPlayed(tracks = 3) {
+    const cacheKey = `spotify.recently-played:${md5(tracks.toString())}`;
+    const cached = await Cache.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const params = new URLSearchParams({});
     if (tracks) params.append('limit', tracks.toString());
 
@@ -173,11 +197,14 @@ export class Spotify {
       return [];
     }
 
-    return response
+    const songs = await response
       .json()
       .then((songs: { items: Array<{ track: SpotifyRawDataTrack; played_at: string }> }) =>
         songs.items.map(({ track, played_at }) => mapSong(track, played_at)),
       );
+
+    await Cache.set(cacheKey, songs, CACHE_TTL_MINUTES * 60);
+    return songs;
   }
 }
 
