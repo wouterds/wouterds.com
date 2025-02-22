@@ -1,6 +1,7 @@
 import { Cache } from '~/lib/cache.server';
 import { md5 } from '~/lib/crypto.server';
 
+import { logger } from '../logger';
 import { transformPost } from './transformers';
 import type { BlueskyAPIPost, BlueskyAPIReply, BlueskyPost } from './types';
 
@@ -18,6 +19,16 @@ const getPostReplies = async (atUri: string): Promise<BlueskyAPIReply[]> => {
       uri: atUri,
     })}`,
   );
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    logger.error(
+      `Failed to fetch posts replies: ${response.status} ${response.statusText}`,
+      response.url,
+      errorData,
+    );
+    return [];
+  }
 
   const data = await response.json();
   if (!Array.isArray(data?.thread?.replies)) {
@@ -45,6 +56,16 @@ const getPosts = async (canonical: string): Promise<BlueskyPost[]> => {
       sort: 'top',
     })}`,
   );
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    logger.error(
+      `Failed to fetch posts: ${response.status} ${response.statusText}`,
+      response.url,
+      errorData,
+    );
+    return [];
+  }
 
   const posts = await response.json().then(async (data) => {
     if (!data?.posts?.length) {
