@@ -24,4 +24,3 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-      - uses: wouterds/github-coverage-badge-action@v1.0.1
