@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { humanReadableSize } from './utils';
 
 describe('humanReadableSize', () => {

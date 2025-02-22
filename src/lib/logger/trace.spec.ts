@@ -1,14 +1,16 @@
 import { faker } from '@faker-js/faker';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const prefixedLog = jest.fn();
+vi.mock('./prefixed-log');
 
-jest.mock('./prefixed-log', () => ({
-  prefixedLog,
-}));
-
+import { prefixedLog } from './prefixed-log';
 import { trace } from './trace';
 
 describe('trace', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('should call prefixedLog with "trace" prefix & passed message', () => {
     // given
     const message = faker.lorem.sentence();

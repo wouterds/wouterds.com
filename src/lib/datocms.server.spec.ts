@@ -1,4 +1,5 @@
 import type { StructuredText } from 'datocms-structured-text-utils';
+import { describe, expect, it } from 'vitest';
 
 import { excerptFromContent, imagesFromContent, plainTextFromContent } from './datocms.server';
 
