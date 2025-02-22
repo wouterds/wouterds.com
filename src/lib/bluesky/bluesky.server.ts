@@ -7,7 +7,7 @@ import type { BlueskyAPIPost, BlueskyAPIReply, BlueskyPost } from './types';
 
 const CACHE_TTL_MINUTES = 5;
 
-const getPostReplies = async (atUri: string): Promise<BlueskyAPIReply[]> => {
+const getPostThread = async (atUri: string): Promise<BlueskyAPIReply[]> => {
   const cacheKey = `bluesky.post.replies:${md5(atUri)}`;
   const cached = await Cache.get(cacheKey);
   if (cached) {
@@ -74,7 +74,7 @@ const getPosts = async (canonical: string): Promise<BlueskyPost[]> => {
 
     return Promise.all(
       data.posts.map(async (post: BlueskyAPIPost['post']) => {
-        return transformPost(post, await getPostReplies(post.uri), { canonical });
+        return transformPost(post, await getPostThread(post.uri), { canonical });
       }),
     );
   });
@@ -86,5 +86,5 @@ const getPosts = async (canonical: string): Promise<BlueskyPost[]> => {
 
 export const Bluesky = {
   getPosts,
-  getPostReplies,
+  getPostThread,
 };
