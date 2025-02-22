@@ -42,7 +42,7 @@ const getPostThread = async (atUri: string): Promise<BlueskyAPIReply[]> => {
   return result;
 };
 
-const getPosts = async (canonical: string): Promise<BlueskyPost[]> => {
+const getPosts = async (canonical: string): Promise<BlueskyPost[] | null> => {
   const cacheKey = `bluesky.posts:${md5(canonical)}`;
   const cached = await Cache.get(cacheKey);
   if (cached) {
@@ -64,7 +64,7 @@ const getPosts = async (canonical: string): Promise<BlueskyPost[]> => {
       response.url,
       errorData,
     );
-    return [];
+    return null;
   }
 
   const posts = await response.json().then(async (data) => {

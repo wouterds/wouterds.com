@@ -1,4 +1,5 @@
 import { SiBluesky } from '@icons-pack/react-simple-icons';
+import { LucideTriangleAlert } from 'lucide-react';
 import { Suspense } from 'react';
 import { Await, useLoaderData } from 'react-router';
 
@@ -89,6 +90,13 @@ export const Comments = () => {
               </p>
 
               {posts?.map((post) => <Comment key={post.uri} {...post} />)}
+
+              {posts === null && (
+                <p className="inline-flex px-3 py-2 rounded-md items-center gap-2 text-sm border border-amber-800/20 bg-amber-50/50 text-amber-800/80 dark:border-amber-500/25 dark:bg-amber-800/25 dark:text-amber-300/90">
+                  <LucideTriangleAlert className="size-4" />
+                  Could not load comments from Bluesky right now.
+                </p>
+              )}
             </div>
           );
         }}
