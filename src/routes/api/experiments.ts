@@ -3,6 +3,7 @@ import type { LoaderFunctionArgs } from 'react-router';
 
 import { AranetReadings, NUCReadings, P1Readings, TeslaData } from '~/database';
 import { Spotify } from '~/lib/spotify.server';
+import { Steam } from '~/lib/steam.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -33,15 +34,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     }
   }
 
-  const [aranet, tesla, p1, nuc, spotify] = await Promise.all([
+  const [aranet, tesla, p1, nuc, spotify, steam] = await Promise.all([
     AranetReadings.getLast(),
     TeslaData.getLast(),
     P1Readings.getLast(),
     NUCReadings.getLast(),
     getLastSpotifyTrack(),
+    getLastSteamGame(),
   ]);
 
-  return Response.json({ aranet, tesla, p1, nuc, spotify });
+  return Response.json({ aranet, tesla, p1, nuc, spotify, steam });
 };
 
 const getLastSpotifyTrack = async () => {
@@ -56,4 +58,9 @@ const getLastSpotifyTrack = async () => {
   }
 
   return track;
+};
+
+const getLastSteamGame = async () => {
+  const steam = new Steam('wouterds');
+  return await steam.getCurrentlyPlaying();
 };
