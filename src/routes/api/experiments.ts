@@ -61,6 +61,6 @@ const getLastSpotifyTrack = async () => {
 };
 
 const getLastSteamGame = async () => {
-  const steam = new Steam('wouterds');
+  const steam = new Steam('76561198004995003');
   return await steam.getCurrentlyPlaying();
 };

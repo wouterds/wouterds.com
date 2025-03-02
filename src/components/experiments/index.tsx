@@ -4,6 +4,7 @@ import { Aranet4 } from './cards/aranet4';
 import { NUC } from './cards/nuc';
 import { Power } from './cards/power';
 import { SpotifyNowPlaying } from './cards/spotify-now-playing';
+import { SteamNowPlaying } from './cards/steam-now-playing';
 import { Tesla } from './cards/tesla';
 import { Aranet4Charts } from './charts/aranet4-charts';
 import { NUCCharts } from './charts/nuc-charts';
@@ -44,6 +45,12 @@ type Data = {
       url: string;
     }>;
     playedAt: number;
+  };
+  steam: {
+    id: string;
+    name: string;
+    url: string;
+    startedAt: number;
   };
 };
 
@@ -92,6 +99,7 @@ export const Experiments = () => {
           <NUC data={data?.nuc} />
         </div>
         {data?.spotify && <SpotifyNowPlaying data={data.spotify} />}
+        {data?.steam && <SteamNowPlaying data={data.steam} />}
       </div>
     </div>
   );
