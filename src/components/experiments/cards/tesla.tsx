@@ -26,7 +26,7 @@ export const Tesla = ({ data }: Props) => {
   return (
     <ExperimentCard title="Car">
       <TooltipProvider>
-        <Tooltip>
+        {/* <Tooltip>
           <TooltipTrigger>
             <MetricItem
               icon={Car}
@@ -46,7 +46,7 @@ export const Tesla = ({ data }: Props) => {
           <TooltipContent>
             <p>Cabin temperature</p>
           </TooltipContent>
-        </Tooltip>
+        </Tooltip> */}
 
         <Tooltip>
           <TooltipTrigger>

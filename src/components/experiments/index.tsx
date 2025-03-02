@@ -89,11 +89,11 @@ export const Experiments = () => {
         <div onClick={() => toggleChart('aranet4')} className="cursor-pointer group">
           <Aranet4 data={data?.aranet} />
         </div>
-        <div onClick={() => toggleChart('tesla')} className="cursor-pointer group">
-          <Tesla data={data?.tesla} />
-        </div>
         <div onClick={() => toggleChart('power')} className="cursor-pointer group">
           <Power data={data?.p1} />
+        </div>
+        <div onClick={() => toggleChart('tesla')} className="cursor-pointer group">
+          <Tesla data={data?.tesla} />
         </div>
         <div onClick={() => toggleChart('nuc')} className="cursor-pointer group">
           <NUC data={data?.nuc} />
